@@ -1,14 +1,5 @@
-version: '3.2'
+version: '3.1'
 services:
-  web:
-    build:
-      context: .
-      dockerfile: Dockerfile.java-web
-      cache_from:
-      - maven:3.5.4-jdk-8-alpine
-      - openjdk:8-jre-alpine
-    ports:
-    - 8080:8080
   prometheus:
     image: prom/prometheus:latest
     ports:
@@ -19,8 +10,20 @@ services:
     volumes:
     - ./prometheus:/etc/prometheus
     - prometheus_data:/prometheus
+    links:
+    - cadvisor:cadvisor
     depends_on:
-    - web
+    - cadvisor
+    restart: always
+  cadvisor:
+    image: google/cadvisor:latest
+    ports:
+    - 8080:8080
+    volumes:
+    - /:/rootfs:ro
+    - /var/run:/var/run:rw
+    - /sys:/sys:ro
+    - /var/lib/docker/:/var/lib/docker:ro
     restart: always
 volumes:
   prometheus_data: {}

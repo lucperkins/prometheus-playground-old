@@ -1,0 +1,9 @@
+version: '3.2'
+services:
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile.jmx
+      cache_from:
+      - maven:3.5.4-jdk-8-alpine
+      - openjdk:8-jre-alpine
