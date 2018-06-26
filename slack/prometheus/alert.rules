@@ -1,0 +1,11 @@
+groups:
+- name: slack-notify
+  rules:
+  - alert: ContainerAlert
+    for: 5s
+    expr: absent(((time() - container_last_seen{name="something"}) < 5))
+    labels:
+      severity: severe
+    annotations:
+      description: "Instance={{ $labels.instance }}, Service/Job={{ $labels.job }} is down for more than 5 seconds"
+      summary: "Instance {{ $labels.instance }} down"
