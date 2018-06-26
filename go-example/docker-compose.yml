@@ -2,13 +2,23 @@ version: '3.2'
 services:
   web:
     build:
-      context: .
+      context: web
       dockerfile: Dockerfile.golang-web
       cache_from:
       - golang:1.10
       - scratch
       args:
-        depVersion: 0.4.1
-        goPackage: github.com/lucperkins/prometheus-playground/go-example
+        goPackage: github.com/lucperkins/prometheus-playground/go-example/web
     ports:
     - 2112:2112
+  client:
+    build:
+      context: client
+      dockerfile: Dockerfile.golang-client
+      cache_from:
+      - golang:1.10
+      - scratch
+      args:
+        goPackage: github.com/lucperkins/prometheus-playground/go-example/client
+    depends_on:
+    - web
