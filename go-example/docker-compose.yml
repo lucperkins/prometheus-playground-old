@@ -3,7 +3,7 @@ services:
   web:
     build:
       context: .
-      dockerfile: Dockerfile.web
+      dockerfile: Dockerfile.golang-web
       cache_from:
       - golang:1.10
       - scratch
