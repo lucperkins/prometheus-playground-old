@@ -3,6 +3,7 @@ package prometheus.example;
 import io.dropwizard.Application;
 import io.dropwizard.Configuration;
 import io.dropwizard.setup.Environment;
+import prometheus.example.health.Health;
 import prometheus.example.resources.HelloResource;
 
 import java.util.logging.Logger;
@@ -16,6 +17,7 @@ public class Main {
         @Override
         public void run(WebConfig config, Environment env) {
             env.jersey().register(HelloResource.class);
+            env.healthChecks().register("health", new Health());
         }
     }
 
