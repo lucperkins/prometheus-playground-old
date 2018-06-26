@@ -22,7 +22,7 @@ func newHandler() *handler {
 }
 
 func (h *handler) get(w http.ResponseWriter, r *http.Request) {
-	h.r.Text(w, http.StatusOK, "Hello world")
+	h.r.Text(w, http.StatusOK, "Hello world!!!")
 }
 
 func main() {

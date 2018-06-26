@@ -9,5 +9,6 @@ services:
       - scratch
       args:
         depVersion: 0.4.1
+        goPackage: github.com/lucperkins/prometheus-playground/go-example
     ports:
     - 2112:2112
