@@ -1,0 +1,41 @@
+version: '3.2'
+services:
+  prometheus1:
+    image: prom/prometheus:latest
+    ports:
+    - 9090:9090
+    command:
+    - --config.file=/etc/prometheus/prometheus.yml
+    - --storage.tsdb.path=/prometheus
+    volumes:
+    - prometheus_data_1:/prometheus
+    - ./prometheus:/etc/prometheus
+    restart: always
+  prometheus2:
+    image: prom/prometheus:latest
+    ports:
+    - 9091:9091
+    command:
+    - --config.file=/etc/prometheus/prometheus.yml
+    - --storage.tsdb.path=/prometheus
+    - '--web.listen-address="0.0.0.0:9091"'
+    volumes:
+    - prometheus_data_2:/prometheus
+    - ./prometheus:/etc/prometheus
+    restart: always
+  prometheus3:
+    image: prom/prometheus:latest
+    ports:
+    - 9092:9092
+    command:
+    - --config.file=/etc/prometheus/prometheus.yml
+    - --storage.tsdb.path=/prometheus
+    - --web.listen-address=":9092"
+    volumes:
+    - prometheus_data_3:/prometheus
+    - ./prometheus:/etc/prometheus
+    restart: always
+volumes:
+  prometheus_data_1: {}
+  prometheus_data_2: {}
+  prometheus_data_3: {}

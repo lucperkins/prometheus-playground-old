@@ -30,10 +30,10 @@ func main() {
 
 	h := newHandler()
 
-	log.Print("Starting up the server on port 2112")
-
 	r.Get("/", h.get)
 	r.Handle("/metrics", promhttp.Handler())
+
+	log.Print("Starting up the server on port 2112")
 
 	log.Fatal(http.ListenAndServe(":2112", r))
 }
