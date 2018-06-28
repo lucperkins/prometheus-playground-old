@@ -1,0 +1,33 @@
+version: '3.1'
+services:
+  prometheus:
+    image: prom/prometheus:latest
+    ports:
+    - 9090:9090
+    links:
+    - alertmanager:alertmanager
+    command:
+    - --config.file=/etc/prometheus/prometheus.yml
+    - --storage.tsdb.path=/prometheus
+    volumes:
+    - ./prometheus:/etc/prometheus
+    - prometheus_data:/prometheus
+    restart: always
+  alertmanager:
+    image: prom/alertmanager:latest
+    ports:
+    - 9093:9093
+    command:
+    - --config.file=/etc/alertmanager/alertmanager.yml
+    - --storage.path=/alertmanager
+    volumes:
+    - ./alertmanager:/etc/alertmanager
+    restart: always
+  amtool:
+    build:
+      context: .
+      dockerfile: Dockerfile.amtool
+    volumes:
+    - ./amtool:/etc/amtool
+volumes:
+  prometheus_data: {}
