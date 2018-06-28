@@ -1,0 +1,27 @@
+version: '3.1'
+services:
+  nginx:
+    image: nginx:latest
+    volumes:
+    - ./nginx:/etc/nginx:ro
+    ports:
+    - 8080:80
+    links:
+    - prometheus:prometheus
+    depends_on:
+    - prometheus
+  prometheus:
+    image: prom/prometheus:latest
+    ports:
+    - 9090:9090
+    command:
+    - --config.file=/etc/prometheus/prometheus.yml
+    - --storage.tsdb.path=/prometheus
+    - --web.route-prefix=/
+    - --web.external-url=http://prometheus
+    volumes:
+    - ./prometheus:/etc/prometheus
+    - prometheus_data:/prometheus
+    restart: always
+volumes:
+  prometheus_data: {}
