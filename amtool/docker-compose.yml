@@ -29,5 +29,7 @@ services:
       dockerfile: Dockerfile.amtool
     volumes:
     - ./amtool:/etc/amtool
+    links:
+    - alertmanager:alertmanager
 volumes:
   prometheus_data: {}
