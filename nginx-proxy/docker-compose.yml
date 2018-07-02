@@ -4,9 +4,9 @@ services:
     image: nginx:latest
     volumes:
     - ./nginx:/etc/nginx:ro
-    - ./certs:/root/certs/my-prometheus-service.com:ro
+    - ./certs:/root/certs/my-prometheus-service.com
     ports:
-    - 80:443
+    - 443:443
     links:
     - prometheus:prometheus
     depends_on:
@@ -19,7 +19,7 @@ services:
     - --config.file=/etc/prometheus/prometheus.yml
     - --storage.tsdb.path=/prometheus
     - --web.route-prefix=/
-    - --web.external-url=http://www.my-prometheus-service.com
+    - --web.external-url=http://my-proxy.com
     volumes:
     - ./prometheus:/etc/prometheus
     - prometheus_data:/prometheus
