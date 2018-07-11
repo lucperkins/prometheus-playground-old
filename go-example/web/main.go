@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"log"
 	"net/http"
 
@@ -21,8 +22,14 @@ func newHandler() *handler {
 	}
 }
 
-func (h *handler) get(w http.ResponseWriter, r *http.Request) {
-	h.r.Text(w, http.StatusOK, "Hello world!!!")
+func (h *handler) greeting(w http.ResponseWriter, r *http.Request) {
+	name := r.URL.Query().Get("name")
+
+	if name == "" {
+		h.r.Text(w, http.StatusBadRequest, "You must supply a name as a query parameter")
+	}
+
+	h.r.Text(w, http.StatusOK, fmt.Sprintf("Hello, %s!", name))
 }
 
 func main() {
@@ -30,7 +37,7 @@ func main() {
 
 	h := newHandler()
 
-	r.Get("/", h.get)
+	r.Get("/greeting", h.greeting)
 	r.Handle("/metrics", promhttp.Handler())
 
 	log.Print("Starting up the server on port 2112")

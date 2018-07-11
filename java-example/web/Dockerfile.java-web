@@ -4,16 +4,16 @@ FROM maven:3.5.4-jdk-8-alpine as build
 ARG mavenDependencyPluginVersion=3.1.1
 
 WORKDIR /app
-COPY pom.xml ./
+COPY pom.xml .
 RUN mvn -B -e -C -T 1C org.apache.maven.plugins:maven-dependency-plugin:${mavenDependencyPluginVersion}:go-offline
 COPY . .
 RUN mvn -B -e -o -T 1C verify
 RUN mvn package
 
 # Run the jar
-FROM openjdk:8-jre-alpine
+FROM openjdk:9-jre
 
 WORKDIR /app
 COPY --from=build /app .
 EXPOSE 8080
-CMD ["java", "-jar", "target/example-0.1.0.jar", "server", "config/web.yml"]
+CMD ["java", "-jar", "target/greeting-0.1.0-SNAPSHOT.jar", "server", "config/web.yml"]

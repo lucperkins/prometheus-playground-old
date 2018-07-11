@@ -2,8 +2,8 @@ version: '3.2'
 services:
   node_exporter:
     image: prom/node-exporter:latest
-    expose:
-    - 9100
+    ports:
+    - 9100:9100
   prometheus:
     image: prom/prometheus:latest
     ports:

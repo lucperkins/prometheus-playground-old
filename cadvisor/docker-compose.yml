@@ -25,19 +25,11 @@ services:
     - /sys:/sys:ro
     - /var/lib/docker/:/var/lib/docker:ro
     restart: always
-  web:
-    build:
-      context: web
-      dockerfile: Dockerfile.golang-web
-      args:
-        goPackage: github.com/lucperkins/prometheus-playground/cadvisor/web
-      cache_from:
-      - golang:1.10
-      - scratch
-    ports:
-    - 9999:9999
     depends_on:
-    - cadvisor
-    - prometheus
+    - redis
+  redis:
+    image: redis:alpine
+    expose:
+    - 6379
 volumes:
   prometheus_data: {}

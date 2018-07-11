@@ -1,0 +1,17 @@
+spring:
+  application:
+    name: greeting
+management:
+  metrics:
+    export:
+      prometheus:
+        enabled: true
+    distribution:
+      percentiles-histogram:
+        http: true
+  security:
+    enabled: false
+  endpoints:
+    web:
+      exposure:
+        include: prometheus

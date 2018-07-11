@@ -1,8 +1,8 @@
 version: '3.2'
 services:
-  web:
+  greeting:
     build:
-      context: .
+      context: web
       dockerfile: Dockerfile.java-web
       cache_from:
       - maven:3.5.4-jdk-8-alpine
@@ -15,12 +15,26 @@ services:
     - 9090:9090
     command:
     - --config.file=/etc/prometheus/prometheus.yml
-    - --storage.tsdb.path=/prometheus
     volumes:
     - ./prometheus:/etc/prometheus
     - prometheus_data:/prometheus
     depends_on:
-    - web
+    - greeting
     restart: always
+  grafana:
+    image: grafana/grafana:latest
+    ports:
+    - 3000:3000
+    volumes:
+    - grafana_data:/var/lib/grafana
+    env_file:
+    - ./grafana/.env
+    #environment:
+    #- GF_SECURITY_ADMIN_PASSWORD=monitoring
+    #- GF_SECURITY_ADMIN_USER=admin
+    #- GF_USERS_ALLOW_SIGN_UP=false
+    depends_on:
+    - prometheus
 volumes:
+  grafana_data: {}
   prometheus_data: {}
