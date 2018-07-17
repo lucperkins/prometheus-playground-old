@@ -14,7 +14,10 @@ alerting:
       - alertmanager:9093
 scrape_configs:
 - job_name: prometheus
-  scrape_interval: 5s
   static_configs:
   - targets:
     - prometheus:9090
+- job_name: web
+  static_configs:
+  - targets:
+    - web:2112

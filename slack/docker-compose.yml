@@ -23,19 +23,11 @@ services:
     volumes:
     - ./alertmanager:/etc/alertmanager
     restart: always
-  grafana:
-    container_name: grafana
-    image: grafana/grafana
-    command:
-    - -config=/etc/grafana/grafana.ini
-    depends_on:
-    - prometheus
-    ports:
-    - 3000:3000
-    volumes:
-    - grafana_data:/var/lib/grafana
-    - ./grafana:/etc/grafana
-    restart: always
+  web:
+    build:
+      context: web
+      args:
+        goPackage: github.com/prometheus-playground/slack/web
 volumes:
   prometheus_data: {}
   grafana_data: {}

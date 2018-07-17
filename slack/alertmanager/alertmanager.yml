@@ -2,30 +2,18 @@ global:
   slack_api_url: https://hooks.slack.com/services/abc/123/def
 
 route:
-  receiver: slack_fallback_channel
+  receiver: default
   routes:
   - match:
-      severity: info
-    receiver: slack_info_channel
-  - match:
-      severity: severe
-    receiver: slack_severe_channel
+      severity: page
+    receiver: slack_ops_channel
 
 receivers:
-- name: slack_info_channel
+- name: default
+- name: slack_ops_channel
   slack_configs:
   - username: my-slack-app
-    channel: '#info'
-- name: slack_severe_channel
-  slack_configs:
-  - username: my-slack-app
-    channel: '#severe'
-- name: slack_fallback_channel
-  slack_configs:
-  - username: my-slack-app
-    channel: '#fallback'
+    channel: '#ops'
 
 templates:
-- /etc/alertmanager/templates/slack.fallback.tmpl
-- /etc/alertmanager/templates/slack.info.tmpl
-- /etc/alertmanager/templates/slack.severe.tmpl
+- /etc/alertmanager/templates/slack.ops.tmpl
