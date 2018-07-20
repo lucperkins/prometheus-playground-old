@@ -1,4 +1,4 @@
-version: '3.1'
+version: '3.2'
 services:
   nginx:
     image: nginx:latest
@@ -6,7 +6,7 @@ services:
     - ./nginx:/etc/nginx:ro
     - ./certs:/root/certs/example.com
     ports:
-    - 12321:12321
+    - 443:443
     links:
     - prometheus:prometheus
     depends_on:
@@ -19,7 +19,7 @@ services:
     - --config.file=/etc/prometheus/prometheus.yml
     - --storage.tsdb.path=/prometheus
     - --web.route-prefix=/
-    - --web.external-url=http://localhost:12321/prometheus
+    - --web.external-url=http://example.com/prometheus
     volumes:
     - ./prometheus:/etc/prometheus
     - prometheus_data:/prometheus
