@@ -6,7 +6,7 @@ services:
     - ./nginx:/etc/nginx:ro
     - ./certs:/root/certs/example.com
     ports:
-    - 80:80
+    - 12321:12321
     links:
     - prometheus:prometheus
     depends_on:
@@ -19,7 +19,7 @@ services:
     - --config.file=/etc/prometheus/prometheus.yml
     - --storage.tsdb.path=/prometheus
     - --web.route-prefix=/
-    - --web.external-url=http://example.com/prometheus
+    - --web.external-url=http://localhost:12321/prometheus
     volumes:
     - ./prometheus:/etc/prometheus
     - prometheus_data:/prometheus

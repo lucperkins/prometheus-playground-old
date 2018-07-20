@@ -9,7 +9,7 @@ scrape_configs:
   - targets:
     - prometheus:9090
 - job_name: cadvisor
-  scrape_interval: 1s
+  scrape_interval: 5s
   static_configs:
   - targets:
     - cadvisor:8080
