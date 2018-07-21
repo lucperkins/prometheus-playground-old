@@ -1,46 +1,111 @@
 package main
 
 import (
-	"fmt"
 	"log"
 	"net/http"
-
-	"github.com/unrolled/render"
-
-	"github.com/prometheus/client_golang/prometheus/promhttp"
+	"strings"
+	"time"
 
 	"github.com/go-chi/chi"
+	"github.com/go-chi/chi/middleware"
+	"github.com/prometheus/client_golang/prometheus"
+	"github.com/prometheus/client_golang/prometheus/promhttp"
+	"github.com/unrolled/render"
 )
 
-type handler struct {
-	r *render.Render
+const (
+	serviceName = "web"
+)
+
+var (
+	prometheusLabels = prometheus.Labels{"service": serviceName}
+)
+
+type server struct {
+	httpReqsCounter *prometheus.CounterVec
+	latencyHist     *prometheus.HistogramVec
+	renderer        *render.Render
 }
 
-func newHandler() *handler {
-	return &handler{
-		r: render.New(),
+func newServer() *server {
+	requestInfoCounter := prometheus.NewCounterVec(
+		prometheus.CounterOpts{
+			Name:        "http_request_info",
+			Help:        "HTTP request counter by response code, request method, and request path",
+			ConstLabels: prometheusLabels,
+		},
+		[]string{"code", "method", "path"},
+	)
+
+	prometheus.MustRegister(requestInfoCounter)
+
+	latencyHistogram := prometheus.NewHistogramVec(
+		prometheus.HistogramOpts{
+			Name:        "http_latency_milliseconds",
+			Help:        "Per-request latency in milliseconds",
+			ConstLabels: prometheusLabels,
+		},
+		[]string{"code", "method", "path"},
+	)
+
+	prometheus.MustRegister(latencyHistogram)
+
+	return &server{
+		httpReqsCounter: requestInfoCounter,
+		latencyHist:     latencyHistogram,
+		renderer:        render.New(),
 	}
 }
 
-func (h *handler) greeting(w http.ResponseWriter, r *http.Request) {
-	name := r.URL.Query().Get("name")
+func (s *server) prometheusMiddleware(next http.Handler) http.Handler {
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		start := time.Now()
 
-	if name == "" {
-		h.r.Text(w, http.StatusBadRequest, "You must supply a name as a query parameter")
-	}
+		ww := middleware.NewWrapResponseWriter(w, r.ProtoMajor)
 
-	h.r.Text(w, http.StatusOK, fmt.Sprintf("Hello, %s!", name))
+		next.ServeHTTP(w, r)
+
+		code := http.StatusText(ww.Status())
+		method := strings.ToLower(r.Method)
+		path := r.URL.Path
+
+		if r.RequestURI != "/metrics" {
+			s.httpReqsCounter.WithLabelValues(
+				code,
+				method,
+				path,
+			).Inc()
+
+			requestLatency := float64(time.Since(start).Nanoseconds())
+
+			s.latencyHist.WithLabelValues(
+				code,
+				method,
+				path,
+			).Observe(requestLatency)
+		}
+	})
+}
+
+func (s *server) get(w http.ResponseWriter, r *http.Request) {
+	s.renderer.JSON(w, http.StatusOK, map[string]string{"hello": "world"})
+}
+
+func (s *server) wrong(w http.ResponseWriter, r *http.Request) {
+	s.renderer.Text(w, http.StatusInternalServerError, "Something went wrong")
 }
 
 func main() {
-	r := chi.NewRouter()
+	router := chi.NewRouter()
+	server := newServer()
 
-	h := newHandler()
+	router.Use(server.prometheusMiddleware)
 
-	r.Get("/greeting", h.greeting)
-	r.Handle("/metrics", promhttp.Handler())
+	router.Get("/", server.get)
 
-	log.Print("Starting up the server on port 2112")
+	router.Get("/wrong", server.wrong)
 
-	log.Fatal(http.ListenAndServe(":2112", r))
+	router.Handle("/metrics", promhttp.Handler())
+
+	log.Fatal(http.ListenAndServe(":2112", router))
 }
