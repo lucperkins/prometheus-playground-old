@@ -1,0 +1,14 @@
+version: '3.2'
+services:
+  haproxy:
+    image: haproxy:latest
+    ports:
+    - 80:80
+    volumes:
+    - ./haproxy/haproxy.cfg:/usr/local/etc/haproxy/haproxy.cfg
+    depends_on:
+    - prometheus
+  prometheus:
+    image: prom/prometheus:latest
+    expose:
+    - 9090
