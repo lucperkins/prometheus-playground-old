@@ -60,3 +60,10 @@ openssl req -newkey rsa:4096 -nodes -keyout certs/key.pem -x509 -out certs/certi
 cat certs/{certificate,key}.pem > certs/cert.pem
 rm certs/{certificate,key}.pem
 ```
+
+The hashed passwords in [`haproxy.cfg`](./haproxy/haproxy.cfg) were created using these commands:
+
+```bash
+mkpasswd -m sha-512 password1
+mkpasswd -m sha-512 password2
+```
