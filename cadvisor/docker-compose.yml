@@ -7,10 +7,8 @@ services:
     - 9090:9090
     command:
     - --config.file=/etc/prometheus/prometheus.yml
-    - --storage.tsdb.path=/prometheus
     volumes:
     - ./prometheus:/etc/prometheus
-    - prometheus_data:/prometheus
     links:
     - cadvisor:cadvisor
     depends_on:
@@ -26,7 +24,6 @@ services:
     - /var/run:/var/run:rw
     - /sys:/sys:ro
     - /var/lib/docker/:/var/lib/docker:ro
-    restart: always
     depends_on:
     - redis
   redis:
@@ -34,5 +31,3 @@ services:
     container_name: redis
     ports:
     - 6379:6379
-volumes:
-  prometheus_data: {}

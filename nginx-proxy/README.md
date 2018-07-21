@@ -16,7 +16,11 @@ make run # docker-compose up --build
 make run-detached # docker-compose up --build --detach
 ```
 
-This will start up an `nginx` container and a `prometheus` container. The `nginx` container is available on `localhost` port 443 but the example will only work if you map `localhost` to `example.com`. You can do so by modifying your `/etc/hosts` file to include a line like this:
+This will start up an `nginx` container and a `prometheus` container.
+
+> To kill the sandbox, run `make kill` (alias for `docker-compose kill`).
+
+The `nginx` container is available on `localhost` port 443 but the example will only work if you map `localhost` to `example.com`. You can do so by modifying your `/etc/hosts` file to include a line like this:
 
 ```conf
 127.0.0.1     localhost example.com
