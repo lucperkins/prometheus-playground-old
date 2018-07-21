@@ -11,5 +11,6 @@ In order to run the sandbox projects you'll need to install [Docker](https://doc
 ## Projects
 
 * [cAdvisor](./cadvisor)
+* [HAProxy](./haproxy)
 * [nginx](./nginx)
 * [Node Exporter](./node-exporter)
