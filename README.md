@@ -7,3 +7,9 @@ Each sandbox project has a `README` with an explanation of the project, a `docke
 ## Prerequisites
 
 In order to run the sandbox projects you'll need to install [Docker](https://docker.com) and [Docker Compose](https://docs.docker.com/compose) and have a Docker daemon running locally.
+
+## Projects
+
+* [cAdvisor](./cadvisor)
+* [nginx](./nginx)
+* [Node Exporter](./node-exporter)
