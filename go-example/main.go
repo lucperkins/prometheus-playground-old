@@ -1,33 +1,75 @@
 package main
 
 import (
+	"log"
 	"net/http"
-	"runtime"
+	"strings"
 
+	"github.com/go-chi/chi"
+	"github.com/go-chi/chi/middleware"
 	"github.com/prometheus/client_golang/prometheus"
 	"github.com/prometheus/client_golang/prometheus/promhttp"
+	"github.com/unrolled/render"
 )
 
-var (
-	numCpus = prometheus.NewGauge(prometheus.GaugeOpts{
-		Name: "num_cpus",
-		Help: "The number of CPUs on this machine",
+type server struct {
+	httpReqsCounter *prometheus.CounterVec
+	renderer        *render.Render
+}
+
+func NewServer() *server {
+	counter := prometheus.NewCounterVec(
+		prometheus.CounterOpts{
+			Name:        "http_request_info",
+			Help:        "HTTP request counter by response code, request method, and request path",
+			ConstLabels: prometheus.Labels{"service": "web"},
+		},
+		[]string{"code", "method", "path"},
+	)
+
+	if err := prometheus.Register(counter); err != nil {
+		log.Fatalf("Could not register Prometheus counter: %v", err)
+	}
+
+	return &server{
+		httpReqsCounter: counter,
+		renderer:        render.New(),
+	}
+}
+
+func (s *server) prometheusMiddleware(next http.Handler) http.Handler {
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		ww := middleware.NewWrapResponseWriter(w, r.ProtoMajor)
+
+		next.ServeHTTP(w, r)
+
+		status := http.StatusText(ww.Status())
+		method := strings.ToLower(r.Method)
+		path := r.URL.Path
+
+		if r.RequestURI != "/metrics" {
+			s.httpReqsCounter.WithLabelValues(
+				status,
+				method,
+				path,
+			).Inc()
+		}
 	})
-)
+}
+
+func (s *server) get(w http.ResponseWriter, r *http.Request) {
+	s.renderer.JSON(w, http.StatusOK, map[string]string{"foo": "bar"})
+}
 
 func main() {
-	prometheus.MustRegister(numCpus)
+	router := chi.NewRouter()
+	server := NewServer()
 
-	router := http.NewServeMux()
+	router.Use(server.prometheusMiddleware)
 
-	numCpus.Set(float64(runtime.NumCPU()))
+	router.Get("/", server.get)
 
 	router.Handle("/metrics", promhttp.Handler())
 
-	server := &http.Server{
-		Addr:    ":2112",
-		Handler: router,
-	}
-
-	server.ListenAndServe()
+	log.Fatal(http.ListenAndServe(":2112", router))
 }
