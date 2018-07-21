@@ -13,16 +13,11 @@ services:
     - prometheus
   prometheus:
     image: prom/prometheus:latest
-    ports:
-    - 9090:9090
+    expose:
+    - 9090
     command:
     - --config.file=/etc/prometheus/prometheus.yml
-    - --storage.tsdb.path=/prometheus
     - --web.route-prefix=/
     - --web.external-url=http://example.com/prometheus
     volumes:
     - ./prometheus:/etc/prometheus
-    - prometheus_data:/prometheus
-    restart: always
-volumes:
-  prometheus_data: {}

@@ -13,7 +13,6 @@ services:
     - cadvisor:cadvisor
     depends_on:
     - cadvisor
-    restart: always
   cadvisor:
     image: google/cadvisor:latest
     container_name: cadvisor
