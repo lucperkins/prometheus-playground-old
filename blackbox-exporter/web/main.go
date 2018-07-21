@@ -12,14 +12,20 @@ var (
 	renderer = render.New()
 )
 
-func probe(w http.ResponseWriter, r *http.Request) {
+func health(w http.ResponseWriter, r *http.Request) {
 	renderer.Text(w, http.StatusOK, "")
+}
+
+func hello(w http.ResponseWriter, r *http.Request) {
+	renderer.JSON(w, http.StatusOK, map[string]string{"hello": "world"})
 }
 
 func main() {
 	router := chi.NewRouter()
 
-	router.Get("/probe", probe)
+	router.Get("/health", health)
+
+	router.Get("/hello", hello)
 
 	log.Fatal(http.ListenAndServe(":2112", router))
 }

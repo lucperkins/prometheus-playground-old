@@ -14,3 +14,4 @@ In order to run the sandbox projects you'll need to install [Docker](https://doc
 * [HAProxy](./haproxy)
 * [nginx](./nginx)
 * [Node Exporter](./node-exporter)
+* [Blackbox prober exporter](./blackbox-exporter)

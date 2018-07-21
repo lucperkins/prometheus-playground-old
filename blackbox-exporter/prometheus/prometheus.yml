@@ -6,11 +6,13 @@ scrape_configs:
     - prometheus:9090
 - job_name: blackbox
   metrics_path: /probe
+  scrape_interval: 15s
   params:
     module: [http_2xx]
   static_configs:
   - targets:
-    - web:2112
+    - prometheus:9090
+    - web:2112/health
   relabel_configs:
   - source_labels: [__address__]
     target_label: __param_target
