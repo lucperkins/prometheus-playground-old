@@ -1,0 +1,39 @@
+version: '3.2'
+services:
+  web:
+    build:
+      context: web
+      dockerfile: Dockerfile.golang-web
+      cache_from:
+      - golang:1.10
+      - scratch
+      args:
+        goPackage: github.com/lucperkins/prometheus-playground/go-example/web
+    ports:
+    - 2112:2112
+  client:
+    build:
+      context: client
+      dockerfile: Dockerfile.golang-client
+      cache_from:
+      - golang:1.10
+      - scratch
+      args:
+        goPackage: github.com/lucperkins/prometheus-playground/go-example/client
+    environment:
+      WEB_HOST: web
+      WEB_PORT: 2112
+    depends_on:
+    - web
+  prometheus:
+    image: prom/prometheus:latest
+    ports:
+    - 9090:9090
+    command:
+    - --config.file=/etc/prometheus/prometheus.yml
+    volumes:
+    - ./prometheus:/etc/prometheus:ro
+    - prometheus_data:/prometheus
+
+volumes:
+  prometheus_data: {}
