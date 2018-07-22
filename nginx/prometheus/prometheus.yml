@@ -3,4 +3,4 @@ scrape_configs:
   scrape_interval: 5s
   static_configs:
   - targets:
-    - prometheus:9090
+    - localhost:9090

@@ -2,8 +2,23 @@ version: '3.2'
 services:
   alertmanager:
     image: prom/alertmanager:latest
+    ports:
+    - 9093:9093
+    command:
+    - --config.file=/etc/alertmanager/alertmanager.yml
+    volumes:
+    - ./alertmanager/alertmanager.yml:/etc/alertmanager/alertmanager.yml:ro
   prometheus:
     image: prom/prometheus:latest
   amtool:
     build:
       context: amtool
+    volumes:
+    - ./amtool:/etc/amtool:ro
+  webhook:
+    build:
+      context: webhook
+      args:
+        goPackage: github.com/lucperkins/prometheus-playground/alertmanager/webhook
+    ports:
+    - 5001:5001

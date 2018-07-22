@@ -11,7 +11,7 @@ scrape_configs:
     module: [http_2xx]
   static_configs:
   - targets:
-    - prometheus:9090
+    - localhost:9090
     - web:2112/health
   relabel_configs:
   - source_labels: [__address__]
