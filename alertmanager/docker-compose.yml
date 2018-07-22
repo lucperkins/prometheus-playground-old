@@ -4,3 +4,6 @@ services:
     image: prom/alertmanager:latest
   prometheus:
     image: prom/prometheus:latest
+  amtool:
+    build:
+      context: amtool
