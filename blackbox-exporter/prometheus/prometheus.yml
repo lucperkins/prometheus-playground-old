@@ -6,7 +6,7 @@ scrape_configs:
     - prometheus:9090
 - job_name: blackbox
   metrics_path: /probe
-  scrape_interval: 15s
+  scrape_interval: 5s
   params:
     module: [http_2xx]
   static_configs:
