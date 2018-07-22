@@ -1,0 +1,6 @@
+version: '3.2'
+services:
+  alertmanager:
+    image: prom/alertmanager:latest
+  prometheus:
+    image: prom/prometheus:latest
