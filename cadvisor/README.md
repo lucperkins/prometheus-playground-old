@@ -26,10 +26,10 @@ This will start up the three containers mentioned above.
 
 Open up `http://localhost:9090/graph` to access the Prometheus expression browser. Some example metrics to explore:
 
-* `rate(container_cpu_usage_seconds_total{name="redis"}[1m])`
-* `container_memory_usage_bytes{name="redis"}`
-* `rate(container_network_transmit_bytes_total[1m])`
-* `rate(container_network_receive_bytes_total[1m])`
+* [`rate(container_cpu_usage_seconds_total{name="redis"}[1m])`](http://localhost:9090/graph?g0.range_input=1h&g0.expr=rate(container_cpu_usage_seconds_total%7Bname%3D%22redis%22%7D%5B1m%5D)&g0.tab=1)
+* [`container_memory_usage_bytes{name="redis"}`](http://localhost:9090/graph?g0.range_input=1h&g0.expr=container_memory_usage_bytes%7Bname%3D%22redis%22%7D&g0.tab=1)
+* [`rate(container_network_transmit_bytes_total[1m])`](http://localhost:9090/graph?g0.range_input=1h&g0.expr=rate(container_network_transmit_bytes_total%5B1m%5D)&g0.tab=1)
+* [`rate(container_network_receive_bytes_total[1m])`](http://localhost:9090/graph?g0.range_input=1h&g0.expr=rate(container_network_receive_bytes_total%5B1m%5D)&g0.tab=1)
 
 ## Assets
 

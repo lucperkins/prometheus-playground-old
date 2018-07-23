@@ -2,7 +2,6 @@ version: '3.2'
 services:
   prometheus:
     image: prom/prometheus:latest
-    container_name: prometheus
     ports:
     - 9090:9090
     command:
@@ -15,7 +14,6 @@ services:
     - cadvisor
   cadvisor:
     image: google/cadvisor:latest
-    container_name: cadvisor
     ports:
     - 8080:8080
     volumes:
@@ -27,6 +25,5 @@ services:
     - redis
   redis:
     image: redis:alpine
-    container_name: redis
     ports:
     - 6379:6379
