@@ -26,7 +26,31 @@ Service | Description
 
 ## Creating an alert
 
-When you first start up the containers, there's no alert-worthy behavior because the `hello` service is running as expected.
+When you first start up the containers, there's no alert-worthy behavior because the `hello` service is running as expected. You can verify this in the [Prometheus expression browser](http://localhost:9090/graph) using the [`up{job="hello"}`](http://localhost:9090/graph?g0.range_input=1h&g0.expr=up%7Bjob%3D%22hello%22%7D&g0.tab=1) expression, which should have a value of 1.
+
+To create an alert, stop the service:
+
+```bash
+docker-compose stop hello
+```
+
+Wait about 10 seconds and you should see something like this in the Docker Compose logs:
+
+```
+webhook_1       | 2018/07/23 19:31:28 Webhook received: {"receiver":"webhook","status":"firing","alerts":[{"status":"firing","labels":{"alertname":"InstanceDown","instance":"hello:2112","job":"hello","severity":"page"},"annotations":{"description":"Instance hello:2112 of job hello has been down for more than 30 seconds","summary":"Instance hello:2112 down"},"startsAt":"2018-07-23T19:31:18.893055177Z","endsAt":"0001-01-01T00:00:00Z","generatorURL":"http://e192da4eb26f:9090/graph?g0.expr=up%7Bjob%3D%22hello%22%7D+%3D%3D+0\u0026g0.tab=1"}],"groupLabels":{"alertname":"InstanceDown"},"commonLabels":{"alertname":"InstanceDown","instance":"hello:2112","job":"hello","severity":"page"},"commonAnnotations":{"description":"Instance hello:2112 of job hello has been down for more than 30 seconds","summary":"Instance hello:2112 down"},"externalURL":"http://98c322df76cb:9093","version":"4","groupKey":"{}:{alertname=\"InstanceDown\"}"}
+```
+
+This indicates that Alertmanager has `POST`ed a webhook to the running [`webhook`](./webhook/main.go) service. You can also read the webhook service logs directly:
+
+```bash
+docker-compose logs webhook
+```
+
+You can also see the alert in the [Alertmanager UI](http://localhost:9093/#/alerts). It should look like this:
+
+![Alertmanager alert](./alert.png)
+
+In the Prometheus expression browser, [`up{job="hello"}`](http://localhost:9090/graph?g0.range_input=1h&g0.expr=up%7Bjob%3D%22hello%22%7D&g0.tab=1) should now have a value of 0.
 
 ## amtool
 
@@ -41,21 +65,3 @@ Now you can use amtool commands like this:
 ```bash
 amtool alert
 ```
-
-
-
-http://localhost:9090/graph?g0.range_input=1h&g0.expr=up&g0.tab=1
-
-```bash
-docker-compose stop hello
-```
-
-```bash
-docker-compose start hello
-```
-
-```bash
-docker-compose logs webhook
-```
-
-![Alertmanager dashboard](./alerts.png)
