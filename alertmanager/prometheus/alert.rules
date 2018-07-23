@@ -2,7 +2,7 @@ groups:
 - name: node.rules
   rules:
   - alert: InstanceDown
-    expr: up{job="web"} == 0
+    expr: up{job="hello"} == 0
     for: 10s
     labels:
       severity: page

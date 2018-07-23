@@ -20,12 +20,12 @@ services:
     build:
       context: amtool
     volumes:
-    - ./amtool:/etc/amtool:ro
-  web:
+    - ./amtool/config.yml:/etc/amtool/config.yml:ro
+  hello:
     build:
-      context: web
+      context: hello
       args:
-        goPackage: github.com/lucperkins/prometheus-playground/alertmanager/web
+        goPackage: github.com/lucperkins/prometheus-playground/alertmanager/hello
       cache_from:
       - golang:1.10
       - scratch

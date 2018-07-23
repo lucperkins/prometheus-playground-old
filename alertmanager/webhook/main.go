@@ -43,7 +43,7 @@ func webhookHandler(w http.ResponseWriter, r *http.Request) {
 func main() {
 	router := chi.NewRouter()
 
-	router.Post("/", webhookHandler)
+	router.Post("/alert", webhookHandler)
 
 	log.Fatal(http.ListenAndServe(address, router))
 }

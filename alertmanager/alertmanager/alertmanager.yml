@@ -10,4 +10,4 @@ route:
 receivers:
 - name: webhook
   webhook_configs:
-  - url: http://webhook:5001
+  - url: http://webhook:5001/alert
