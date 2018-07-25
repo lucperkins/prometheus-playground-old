@@ -6,15 +6,15 @@ services:
     - ./nginx:/etc/nginx:ro
     - ./certs:/root/certs/example.com
     ports:
-    - 443:443
+    - 12321:12321
     links:
     - prometheus:prometheus
     depends_on:
     - prometheus
   prometheus:
     image: prom/prometheus:latest
-    expose:
-    - 9090
+    ports:
+    - 9090:9090
     command:
     - --config.file=/etc/prometheus/prometheus.yml
     - --web.route-prefix=/
