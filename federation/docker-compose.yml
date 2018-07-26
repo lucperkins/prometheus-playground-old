@@ -26,5 +26,7 @@ services:
     - --web.listen-address=0.0.0.0:9092
     volumes:
     - ./prometheus/prometheus.yml:/etc/prometheus/prometheus.yml:ro
-  prometheus:
-    image: prom/prometheus:latest
+  node_exporter:
+    image: prom/node-exporter:latest
+    ports:
+    - 9100:9100

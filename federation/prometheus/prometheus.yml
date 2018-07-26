@@ -12,3 +12,8 @@ scrape_configs:
     - prometheus1:9090
     - prometheus2:9091
     - prometheus3:9092
+- job_name: node
+  scrape_interval: 5s
+  static_configs:
+  - targets:
+    - node_exporter:9100
