@@ -17,7 +17,7 @@ services:
     command:
     - --config.file=/etc/prometheus/prometheus.yml
     volumes:
-    - ./prometheus:/etc/prometheus
+    - ./prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
     depends_on:
     - blackbox
   web:
