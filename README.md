@@ -16,6 +16,7 @@ Directory | Scenario
 [`blackbox`](./blackbox) | A [BlackBox prober exporter](https://github.com/prometheus/blackbox_exporter) probes a simple web service and provides probe-based metrics to Prometheus
 [`cadvisor`](./cadvisor) | Prometheus scrapes [cAdvisor](https://github.com/google/cadvisor)-gathered metrics for several containers
 [`federation`](./federation) | Three Prometheus instances run together as a single federation
+[`go-app`](./go-app) | An instrumented Go application using the Prometheus [Go client](https://github.com/prometheus/client_golang)
 [`haproxy`](./haproxy) | Prometheus runs behind [HAProxy](https://haproxy.org/), which acts as a reverse proxy and provides basic auth and TLS encryption
 [`nginx`](./nginx) | Prometheus runs behind [nginx](https://nginx.org), which acts as a reverse proxy and provides basic auth and TLS encryption
 [`node-exporter`](./node-exporter) | Prometheus scrapes Linux host metrics from a [Node Exporter](https://prometheus.io/docs/guides/node-exporter/)
