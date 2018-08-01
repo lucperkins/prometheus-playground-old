@@ -19,4 +19,4 @@ This will start up two services:
 Service | Description
 :-------|:-----------
 `prometheus` | A Prometheus instance that's [configured](./prometheus/prometheus.yml) to scrape metrics from the Go application running on port 2112
-`myapp` | A simple Go web application that pretty much only exports a simple metric (a `myapp_processed_ops_total` counter that is [incremented](./myapp/main.go#L27-L34) every 2 seconds)
+`myapp` | A simple Go web application that pretty much only exports a simple metric (a [`myapp_processed_ops_total`](./myapp/main.go#L20-L24) counter that is [incremented](./myapp/main.go#L27-L34) every 2 seconds)
