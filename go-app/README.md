@@ -4,8 +4,6 @@ In this sandbox, a Prometheus intance scrapes metrics from a simple [Go](https:/
 
 ## Usage
 
-## Usage
-
 To start the sandbox:
 
 ```bash
