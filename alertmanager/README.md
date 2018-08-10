@@ -1,6 +1,6 @@
 # Alertmanager sandbox
 
-In this sandbox, a Prometheus [Alertmanager](https://github.com/prometheus/alertmanager) handles alerts thrown by a running Prometheus instance. The Alertmanager in this example is configured with one alert (specified in an [`alert.rules`](./prometheus/alert.rules) file) that Prometheus fires whenever the [`hello`](./hello/main.go) service---a simple web service---is down for more than 10 seconds. If Prometheus alerts the Alertmanager that the `hello` service is down, it will `POST` a webhook to the [`webhook`](./webhook/main.go) service, which will then log the alert sent by the Alertmanager to stdout.
+In this sandbox, a Prometheus [Alertmanager](https://github.com/prometheus/alertmanager) handles alerts thrown by a running Prometheus instance. The Alertmanager in this example is configured with one alert (specified in an [`alert.rules`](./prometheus/alert.rules) file) that Prometheus fires whenever the [`hello`](./hello/main.go) service—a simple web service—is down for more than 10 seconds. If Prometheus alerts the Alertmanager that the `hello` service is down, it will `POST` a webhook to the [`webhook`](./webhook/main.go) service, which will then log the alert sent by the Alertmanager to stdout.
 
 ## Usage
 

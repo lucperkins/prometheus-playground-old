@@ -23,4 +23,4 @@ Service | Description
 
 > To kill the sandbox, run `make kill` (alias for `docker-compose kill`).
 
-Once the sandbox is up and running, you can verify that the `myservice_processed_ops_total` metric is being scraped---and thus that the `myservice` service has been properly discovered by Prometheus---you can see the current value in the [expression browser](http://localhost:9090/graph?g0.range_input=1h&g0.expr=myservice_processed_ops_total&g0.tab=1).
+Once the sandbox is up and running, you can verify that the `myservice_processed_ops_total` metric is being scraped—and thus that the `myservice` service has been properly discovered by Prometheus—you can see the current value in the [expression browser](http://localhost:9090/graph?g0.range_input=1h&g0.expr=myservice_processed_ops_total&g0.tab=1).
