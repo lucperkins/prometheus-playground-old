@@ -1,0 +1,11 @@
+[
+  {
+    "targets": [
+      "myservice:1234"
+    ],
+    "labels": {
+      "env": "prod",
+      "job": "myservice"
+    }
+  }
+]
