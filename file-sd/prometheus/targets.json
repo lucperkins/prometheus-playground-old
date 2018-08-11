@@ -1,10 +1,11 @@
 [
   {
     "targets": [
-      "myservice:1234"
+      "myservice1:1234",
+      "myservice2:4321"
     ],
     "labels": {
-      "env": "prod",
+      "env": "development",
       "job": "myservice"
     }
   }

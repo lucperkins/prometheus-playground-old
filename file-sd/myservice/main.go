@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"log"
 	"net/http"
+	"os"
 	"time"
 
 	"github.com/prometheus/client_golang/prometheus/promauto"
@@ -12,11 +13,9 @@ import (
 	"github.com/prometheus/client_golang/prometheus/promhttp"
 )
 
-const (
-	port = 1234
-)
-
 var (
+	port = os.Getenv("PORT")
+
 	processedOps = promauto.NewCounter(prometheus.CounterOpts{
 		Name:      "processed_ops_total",
 		Help:      "The total number of processed events",
@@ -34,7 +33,7 @@ func recordMetrics() {
 }
 
 func main() {
-	address := fmt.Sprintf(":%d", port)
+	address := fmt.Sprintf(":%s", port)
 
 	recordMetrics()
 
