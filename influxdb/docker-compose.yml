@@ -1,0 +1,8 @@
+version: '3.2'
+services:
+  prometheus:
+    image: prom/prometheus:latest
+  influxdb:
+    image: influxdb:latest
+  remoteadapter:
+    image: gavind/prometheus-remote-storage-adapter:1.0
