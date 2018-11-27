@@ -1,4 +1,6 @@
-# The Prometheus Playground
+# The Prometheus Playground (now under the [prometheus-community](https://github.com/prometheus-community/prometheus-playground) org)
+
+> **Note**: This repo is no longer maintained. If you'd like to contribute, please do so via the [prometheus-community/prometheus-playground](https://github.com/prometheus-community/prometheus-playground) repo instead.
 
 This repo houses a variety of [Docker-Compose](https://docs.docker.com/compose)-based "sandbox" projects showcasing the [Prometheus](https://prometheus.io) monitoring system. All projects are "turnkey" and require just a single `docker-compose up` command to run.
 
